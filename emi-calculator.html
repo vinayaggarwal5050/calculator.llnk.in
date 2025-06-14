@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EMI Calculator - Calculate EMI, interest rate, tenure, compare loans and get month-wise summaries. Free, printable and mobile-friendly tool on calculator.llnk.in">
+  <meta name="keywords" content="EMI calculator, loan calculator, interest rate calculator, loan comparison, financial tools">
+  <meta name="author" content="calculator.llnk.in">
+  <title>EMI Calculator | Online Calculator</title>
+  <style>
+    :root {
+      --primary-color: #004d99;
+      --secondary-color: #e6f0ff;
+      --card-bg: #ffffff;
+      --card-border: #d0d0d0;
+      --accent-color: #28a745;
+      --text-dark: #000000;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f8fc;
+      color: #222;
+    }
+
+    header {
+      background: var(--primary-color);
+      color: #fff;
+      padding: 15px 20px;
+    }
+
+    header a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    main {
+      padding: 30px 20px;
+      max-width: 850px;
+      margin: auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--primary-color);
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      box-shadow: inset 0 -2px 0 var(--primary-color);
+    }
+
+    .tab-button {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      background: var(--secondary-color);
+      border: none;
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-dark);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .tab-button.active {
+      background: var(--primary-color);
+      color: #fff;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid var(--card-border);
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    button {
+      background: var(--primary-color);
+      color: #fff;
+      padding: 10px 15px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    button:hover {
+      background: #003366;
+    }
+
+    .results,
+    .summary {
+      margin-top: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    th,
+    td {
+      border: 1px solid var(--card-border);
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .print-btn {
+      margin-top: 15px;
+      background: var(--accent-color);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a href="/">Online Calculator</a>
+  </header>
+
+  <main>
+    <h1>EMI Calculator</h1>
+
+    <div class="tabs">
+      <button class="tab-button active" onclick="showTab(0)">Calculate EMI</button>
+      <button class="tab-button" onclick="showTab(1)">Calculate Tenure</button>
+      <button class="tab-button" onclick="showTab(2)">Calculate Interest Rate</button>
+      <button class="tab-button" onclick="showTab(3)">Compare Loans</button>
+    </div>
+
+    <div class="tab-content active" id="tab-0">
+      <label>Loan Amount (₹):
+        <input type="number" id="loanAmount">
+      </label>
+      <label>Interest Rate (Annual %):
+        <input type="number" id="interestRate">
+      </label>
+      <label>Loan Tenure (Years):
+        <input type="number" id="loanTenure">
+      </label>
+      <button onclick="calculateEMI()">Calculate EMI</button>
+      <button class="print-btn" onclick="downloadAsPDF()">Download as PDF</button>
+      <div class="results" id="results"></div>
+      <div class="summary" id="summary"></div>
+    </div>
+
+    <div class="tab-content" id="tab-1">
+      <label>Loan Amount (₹):
+        <input type="number" id="tenureLoan">
+      </label>
+      <label>Interest Rate (Annual %):
+        <input type="number" id="tenureRate">
+      </label>
+      <label>Monthly EMI (₹):
+        <input type="number" id="tenureEMI">
+      </label>
+      <button onclick="calculateTenure()">Calculate Tenure</button>
+      <div class="results" id="tenureResult"></div>
+    </div>
+
+    <div class="tab-content" id="tab-2">
+      <label>Loan Amount (₹):
+        <input type="number" id="rateLoan">
+      </label>
+      <label>Loan Tenure (Years):
+        <input type="number" id="rateTenure">
+      </label>
+      <label>Monthly EMI (₹):
+        <input type="number" id="rateEMI">
+      </label>
+      <button onclick="calculateRate()">Estimate Interest Rate</button>
+      <div class="results" id="rateResult"></div>
+    </div>
+
+    <div class="tab-content" id="tab-3">
+      <label>Loan 1 Amount (₹):
+        <input type="number" id="compareAmt1">
+      </label>
+      <label>Loan 1 Rate (%):
+        <input type="number" id="compareRate1">
+      </label>
+      <label>Loan 1 Tenure (Years):
+        <input type="number" id="compareTenure1">
+      </label>
+
+      <label>Loan 2 Amount (₹):
+        <input type="number" id="compareAmt2">
+      </label>
+      <label>Loan 2 Rate (%):
+        <input type="number" id="compareRate2">
+      </label>
+      <label>Loan 2 Tenure (Years):
+        <input type="number" id="compareTenure2">
+      </label>
+
+      <button onclick="compareLoans()">Compare Loans</button>
+      <div class="results" id="compareResult"></div>
+    </div>
+  </main>
+
+  <script>
+    function showTab(index) {
+      document.querySelectorAll('.tab-content').forEach((el, i) => {
+        el.classList.toggle('active', i === index);
+      });
+      document.querySelectorAll('.tab-button').forEach((el, i) => {
+        el.classList.toggle('active', i === index);
+      });
+    }
+
+    function calculateEMI() {
+      const P = +document.getElementById('loanAmount').value;
+      const r = +document.getElementById('interestRate').value / 12 / 100;
+      const n = +document.getElementById('loanTenure').value * 12;
+      const emi = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+      const totalPayment = emi * n;
+      const totalInterest = totalPayment - P;
+      document.getElementById('results').innerHTML = `
+        <h3>Monthly EMI: ₹${emi.toFixed(2)}</h3>
+        <p>Total Interest: ₹${totalInterest.toFixed(2)}</p>
+        <p>Total Payment: ₹${totalPayment.toFixed(2)}</p>`;
+
+      let summary = '<h3>Month-wise Summary</h3><table><tr><th>Month</th><th>Principal Paid</th><th>Interest Paid</th><th>Total Paid</th><th>Balance</th></tr>';
+      let balance = P;
+      for (let m = 1; m <= n; m++) {
+        let interest = balance * r;
+        let principal = emi - interest;
+        balance -= principal;
+        summary += `<tr><td>${m}</td><td>₹${principal.toFixed(2)}</td><td>₹${interest.toFixed(2)}</td><td>₹${emi.toFixed(2)}</td><td>₹${balance.toFixed(2)}</td></tr>`;
+      }
+      summary += '</table>';
+      document.getElementById('summary').innerHTML = summary;
+    }
+
+    function calculateTenure() {
+      const P = +document.getElementById('tenureLoan').value;
+      const emi = +document.getElementById('tenureEMI').value;
+      const r = +document.getElementById('tenureRate').value / 12 / 100;
+      const n = Math.log(emi / (emi - P * r)) / Math.log(1 + r);
+      document.getElementById('tenureResult').innerHTML = `<h3>Estimated Tenure: ${(n / 12).toFixed(1)} years (${Math.round(n)} months)</h3>`;
+    }
+
+    function calculateRate() {
+      const P = +document.getElementById('rateLoan').value;
+      const n = +document.getElementById('rateTenure').value * 12;
+      const emi = +document.getElementById('rateEMI').value;
+      let low = 0, high = 100, r;
+      for (let i = 0; i < 100; i++) {
+        r = (low + high) / 2;
+        let guess = (P * r / 1200) * Math.pow(1 + r / 1200, n) / (Math.pow(1 + r / 1200, n) - 1);
+        if (guess > emi) high = r; else low = r;
+      }
+      document.getElementById('rateResult').innerHTML = `<h3>Estimated Interest Rate: ${r.toFixed(2)}%</h3>`;
+    }
+
+    function compareLoans() {
+      const A1 = +document.getElementById('compareAmt1').value;
+      const R1 = +document.getElementById('compareRate1').value / 12 / 100;
+      const N1 = +document.getElementById('compareTenure1').value * 12;
+      const EMI1 = (A1 * R1 * Math.pow(1 + R1, N1)) / (Math.pow(1 + R1, N1) - 1);
+      const total1 = EMI1 * N1;
+
+      const A2 = +document.getElementById('compareAmt2').value;
+      const R2 = +document.getElementById('compareRate2').value / 12 / 100;
+      const N2 = +document.getElementById('compareTenure2').value * 12;
+      const EMI2 = (A2 * R2 * Math.pow(1 + R2, N2)) / (Math.pow(1 + R2, N2) - 1);
+      const total2 = EMI2 * N2;
+
+      document.getElementById('compareResult').innerHTML = `
+        <h3>Loan Comparison</h3>
+        <table><tr><th></th><th>Loan 1</th><th>Loan 2</th></tr>
+        <tr><td>Monthly EMI</td><td>₹${EMI1.toFixed(2)}</td><td>₹${EMI2.toFixed(2)}</td></tr>
+        <tr><td>Total Payment</td><td>₹${total1.toFixed(2)}</td><td>₹${total2.toFixed(2)}</td></tr>
+        <tr><td>Total Interest</td><td>₹${(total1 - A1).toFixed(2)}</td><td>₹${(total2 - A2).toFixed(2)}</td></tr></table>`;
+    }
+
+    function downloadAsPDF() {
+      window.print();
+    }
+  </script>
+</body>
+
+</html>

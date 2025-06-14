@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Online Calculator - Free tools for finance, math, conversion, date & time, and more. Easy, fast, and mobile-friendly calculators on calculator.llnk.in"> 
+  <meta name="keywords" content="online calculator, emi calculator, sip calculator, tax calculator, age calculator, word counter, unit converter">
+  <meta name="author" content="calculator.llnk.in">
+  <title>Online Calculator | calculator.llnk.in</title>
+  <style>
+    :root {
+      --primary-color: #0066cc;
+      --card-bg: #ffffff;
+      --card-border: #e0e0e0;
+      --category-bg: #f8f9fa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f2f2f2;
+      scroll-behavior: smooth;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 15px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      margin: 0 0 10px 0;
+      flex: 1 0 100%;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      background-color: white;
+      color: var(--primary-color);
+    }
+
+    section {
+      padding: 30px 20px;
+    }
+
+    .category-title {
+      font-size: 1.6rem;
+      margin-bottom: 15px;
+      padding: 10px;
+      background-color: var(--category-bg);
+      border-left: 5px solid var(--primary-color);
+    }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .tool-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .tool-card a {
+      text-decoration: none;
+      color: #222;
+      font-weight: 600;
+      font-size: 1rem;
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.4rem;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Online Calculator</h1>
+    <nav>
+      <a href="#financial">Financial</a>
+      <a href="#conversion">Conversion</a>
+      <a href="#math">Math</a>
+      <a href="#datetime">Date & Time</a>
+      <a href="#text">Text Tools</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="financial">
+      <div class="category-title">Financial Tools</div>
+      <div class="tool-grid">
+        <div class="tool-card"><a href="/emi-calculator.html" target="_blank">EMI Calculator</a></div>
+        <div class="tool-card"><a href="/sip-calculator.html" target="_blank">SIP Calculator</a></div>
+        <div class="tool-card"><a href="/tax-calculator.html" target="_blank">Tax Calculator</a></div>
+      </div>
+    </section>
+
+    <section id="conversion">
+      <div class="category-title">Conversion Tools</div>
+      <div class="tool-grid">
+        <div class="tool-card"><a href="/length-converter.html" target="_blank">Length Converter</a></div>
+        <div class="tool-card"><a href="/currency-converter.html" target="_blank">Currency Converter</a></div>
+        <div class="tool-card"><a href="/temperature-converter.html" target="_blank">Temperature Converter</a></div>
+      </div>
+    </section>
+
+    <section id="math">
+      <div class="category-title">Math Tools</div>
+      <div class="tool-grid">
+        <div class="tool-card"><a href="/calculator.html" target="_blank">Basic Calculator</a></div>
+        <div class="tool-card"><a href="/percentage-calculator.html" target="_blank">Percentage Calculator</a></div>
+        <div class="tool-card"><a href="/factorial.html" target="_blank">Factorial Calculator</a></div>
+      </div>
+    </section>
+
+    <section id="datetime">
+      <div class="category-title">Date & Time Tools</div>
+      <div class="tool-grid">
+        <div class="tool-card"><a href="/age-calculator.html" target="_blank">Age Calculator</a></div>
+        <div class="tool-card"><a href="/date-diff.html" target="_blank">Date Difference Calculator</a></div>
+        <div class="tool-card"><a href="/countdown.html" target="_blank">Countdown Timer</a></div>
+      </div>
+    </section>
+
+    <section id="text">
+      <div class="category-title">Text Tools</div>
+      <div class="tool-grid">
+        <div class="tool-card"><a href="/word-counter.html" target="_blank">Word Counter</a></div>
+        <div class="tool-card"><a href="/case-converter.html" target="_blank">Case Converter</a></div>
+        <div class="tool-card"><a href="/password-generator.html" target="_blank">Password Generator</a></div>
+      </div>
+    </section>
+  </main>
+</body>
+
+</html>
