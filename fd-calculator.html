@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Fixed Deposit (FD) Calculator - Calculate interest earned on your FD investment easily."
+    />
+    <meta
+      name="keywords"
+      content="FD calculator, fixed deposit calculator, interest calculator, investment returns"
+    />
+    <meta name="author" content="YourBrand" />
+    <title>FD Calculator | Fixed Deposit Interest</title>
+  <style>
+    :root {
+      --primary-color: #004d99;
+      --secondary-color: #e6f0ff;
+      --card-bg: #ffffff;
+      --card-border: #d0d0d0;
+      --accent-color: #28a745;
+      --text-dark: #000000;
+      --nav-button-bg: #337acc;
+      --nav-button-active: #1a5ca0;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f8fc;
+      color: #222;
+    }
+
+    header {
+      background: var(--primary-color);
+      color: #fff;
+      padding: 15px 20px;
+    }
+
+    header a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    nav.financial-nav {
+      background: var(--primary-color);
+      padding: 10px 20px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    nav.financial-nav a {
+      background: var(--nav-button-bg);
+      color: #fff;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 25px;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+
+    nav.financial-nav a.active,
+    nav.financial-nav a:hover {
+      background: var(--nav-button-active);
+    }
+
+    main {
+      padding: 30px 20px;
+      max-width: 850px;
+      margin: auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--primary-color);
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      box-shadow: inset 0 -2px 0 var(--primary-color);
+    }
+
+    .tab-button {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      background: var(--secondary-color);
+      border: none;
+      font-weight: 600;
+      font-size: 1rem;
+      color: darkgray;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .tab-button.active {
+      background: var(--primary-color);
+      color: #fff;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid var(--card-border);
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    button {
+      background: var(--primary-color);
+      color: #fff;
+      padding: 10px 15px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    button:hover {
+      background: #003366;
+    }
+
+    .results {
+      margin-top: 30px;
+    }
+
+    .print-btn {
+      margin-top: 15px;
+      background: var(--accent-color);
+    }
+
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid var(--card-border);
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    button {
+      background: var(--primary-color);
+      color: #fff;
+      padding: 10px 15px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    button:hover {
+      background: #003366;
+    }
+
+    .results {
+      margin-top: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th,
+    td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: right;
+    }
+
+    th {
+      background: #f0f0f0;
+    }
+  </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  </head>
+
+  <body>
+
+  <header>
+    <a href="/">Online Calculator</a>
+  </header>
+
+  <nav class="financial-nav">
+    <a href="emi-calculator.html">EMI</a>
+    <a href="sip-calculator.html">SIP</a>
+    <a href="fd-calculator.html" class="active">FD</a>
+    <a href="rd-calculator.html">RD</a>
+    <a href="tax-calculator.html">Tax</a>
+  </nav>
+
+    <main>
+    <h1>FD Calculator</h1>
+
+      <div class="tab-content active" id="tab0">
+        <label for="fd-principal">Principal Amount (₹)</label>
+        <input type="number" id="fd-principal" placeholder="e.g., 100000" />
+
+        <label for="fd-rate">Annual Interest Rate (%)</label>
+        <input type="number" id="fd-rate" placeholder="e.g., 6.5" />
+
+        <label for="fd-tenure">Tenure</label>
+        <input type="number" id="fd-tenure" placeholder="e.g., 5" />
+
+        <label for="fd-tenure-type">Tenure Type</label>
+        <select id="fd-tenure-type">
+          <option value="year">Years</option>
+          <option value="month">Months</option>
+        </select>
+
+        <label for="fd-compounding">Compounding Frequency</label>
+        <select id="fd-compounding">
+          <option value="1">Yearly</option>
+          <option value="2">Half-Yearly</option>
+          <option value="4">Quarterly</option>
+          <option value="12">Monthly</option>
+        </select>
+
+        <button onclick="calculateFD()">Calculate</button>
+
+        <div class="results" id="fd-summary"></div>
+        <button onclick="downloadSummaryPDF('fd-summary')">
+          Download Summary
+        </button>
+      </div>
+    </main>
+
+    <script>
+      function calculateFD() {
+        const principal = parseFloat(
+          document.getElementById("fd-principal").value
+        );
+        const rate = parseFloat(document.getElementById("fd-rate").value);
+        const tenure = parseFloat(document.getElementById("fd-tenure").value);
+        const tenureType = document.getElementById("fd-tenure-type").value;
+        const compounding = parseInt(
+          document.getElementById("fd-compounding").value
+        );
+
+        if (!principal || !rate || !tenure || !compounding) return;
+
+        const totalMonths = tenureType === "year" ? tenure * 12 : tenure;
+        const annualRate = rate / 100;
+        const compoundingMonths = 12 / compounding;
+
+        let balance = principal;
+        const rows = [];
+
+        for (let month = 1; month <= totalMonths; month++) {
+          const opening = balance;
+
+          if (month % compoundingMonths === 0) {
+            const interest = balance * (annualRate / compounding);
+            balance += interest;
+          }
+
+          rows.push({
+            month,
+            opening: opening.toFixed(2),
+            closing: balance.toFixed(2),
+          });
+        }
+
+        const interestEarned = balance - principal;
+
+        let html = `
+            <table>
+      <tr><th>Total Principal</th><th>Interest Earned</th><th>Maturity Value</th></tr>
+      <tr>
+        <td>₹${principal.toFixed(2)}</td>
+        <td>₹${interestEarned.toFixed(2)}</td>
+        <td>₹${balance.toFixed(2)}</td>
+      </tr>
+    </table>
+    <br>
+    <table>
+      <tr><th>Month</th><th>Opening Balance</th><th>Closing Balance</th></tr>
+      ${rows
+        .map(
+          (row) => `
+        <tr>
+          <td>${row.month}</td>
+          <td>₹${row.opening}</td>
+          <td>₹${row.closing}</td>
+        </tr>`
+        )
+        .join("")}
+    </table>
+    <br>
+
+  `;
+
+        document.getElementById("fd-summary").innerHTML = html;
+      }
+    </script>
+  </body>
+</html>

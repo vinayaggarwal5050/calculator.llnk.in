@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SIP Calculator - Calculate monthly, yearly, and lumpsum investment returns with a summary. Mobile-friendly, printable SIP planner tool on calculator.llnk.in." />
+  <meta name="keywords" content="SIP calculator, mutual fund calculator, investment planner, lumpsum calculator, monthly SIP, financial tools" />
+  <meta name="author" content="calculator.llnk.in" />
+  <title>SIP Calculator | Online Calculator</title>
+  <style>
+    :root {
+      --primary-color: #004d99;
+      --secondary-color: #e6f0ff;
+      --card-bg: #ffffff;
+      --card-border: #d0d0d0;
+      --accent-color: #28a745;
+      --text-dark: #000000;
+      --nav-button-bg: #337acc;
+      --nav-button-active: #1a5ca0;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f8fc;
+      color: #222;
+    }
+
+    header {
+      background: var(--primary-color);
+      color: #fff;
+      padding: 15px 20px;
+    }
+
+    header a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    nav.financial-nav {
+      background: var(--primary-color);
+      padding: 10px 20px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    nav.financial-nav a {
+      background: var(--nav-button-bg);
+      color: #fff;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 25px;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+
+    nav.financial-nav a.active,
+    nav.financial-nav a:hover {
+      background: var(--nav-button-active);
+    }
+
+    main {
+      padding: 30px 20px;
+      max-width: 850px;
+      margin: auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--primary-color);
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      box-shadow: inset 0 -2px 0 var(--primary-color);
+    }
+
+    .tab-button {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      background: var(--secondary-color);
+      border: none;
+      font-weight: 600;
+      font-size: 1rem;
+      color: darkgray;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .tab-button.active {
+      background: var(--primary-color);
+      color: #fff;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid var(--card-border);
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    button {
+      background: var(--primary-color);
+      color: #fff;
+      padding: 10px 15px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    button:hover {
+      background: #003366;
+    }
+
+    .results {
+      margin-top: 30px;
+    }
+
+    .print-btn {
+      margin-top: 15px;
+      background: var(--accent-color);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a href="/">Online Calculator</a>
+  </header>
+
+  <nav class="financial-nav">
+    <a href="emi-calculator.html">EMI</a>
+    <a href="sip-calculator.html" class="active">SIP</a>
+    <a href="fd-calculator.html">FD</a>
+    <a href="rd-calculator.html">RD</a>
+    <a href="tax-calculator.html">Tax</a>
+  </nav>
+
+  <main>
+    <h1>SIP Calculator</h1>
+
+    <div class="tabs">
+      <button class="tab-button active" onclick="showTab(0)">Monthly SIP</button>
+      <button class="tab-button" onclick="showTab(1)">Yearly SIP</button>
+      <button class="tab-button" onclick="showTab(2)">Lumpsum</button>
+    </div>
+
+    <div class="tab-content active" id="tab0">
+      <label for="monthlyInvestment">Monthly Investment (₹)</label>
+      <input type="number" id="monthlyInvestment" placeholder="e.g. 5000">
+
+      <label for="rate">Expected Annual Return (%)</label>
+      <input type="number" id="rate" placeholder="e.g. 12">
+
+      <label for="duration">Investment Duration (in years)</label>
+      <input type="number" id="duration" placeholder="e.g. 10">
+
+      <button onclick="calculateMonthlySIP()">Calculate</button>
+
+      <div class="results" id="monthlyResults"></div>
+    </div>
+
+    <div class="tab-content" id="tab1">
+      <label for="yearlyInvestment">Yearly Investment (₹)</label>
+      <input type="number" id="yearlyInvestment" placeholder="e.g. 60000">
+
+      <label for="yearlyRate">Expected Annual Return (%)</label>
+      <input type="number" id="yearlyRate" placeholder="e.g. 12">
+
+      <label for="yearlyDuration">Investment Duration (in years)</label>
+      <input type="number" id="yearlyDuration" placeholder="e.g. 10">
+
+      <button onclick="calculateYearlySIP()">Calculate</button>
+
+      <div class="results" id="yearlyResults"></div>
+    </div>
+
+    <div class="tab-content" id="tab2">
+      <label for="lumpsumInvestment">Lumpsum Investment (₹)</label>
+      <input type="number" id="lumpsumInvestment" placeholder="e.g. 100000">
+
+      <label for="lumpsumRate">Expected Annual Return (%)</label>
+      <input type="number" id="lumpsumRate" placeholder="e.g. 12">
+
+      <label for="lumpsumDuration">Investment Duration (in years)</label>
+      <input type="number" id="lumpsumDuration" placeholder="e.g. 10">
+
+      <button onclick="calculateLumpsum()">Calculate</button>
+
+      <div class="results" id="lumpsumResults"></div>
+    </div>
+  </main>
+
+  <script>
+    function showTab(index) {
+      const tabs = document.querySelectorAll('.tab-button');
+      const contents = document.querySelectorAll('.tab-content');
+      tabs.forEach((tab, i) => {
+        tab.classList.toggle('active', i === index);
+        contents[i].classList.toggle('active', i === index);
+      });
+    }
+
+    function formatIndianNumber(num) {
+      return new Intl.NumberFormat('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(num);
+    }
+
+    function calculateMonthlySIP() {
+      const P = parseFloat(document.getElementById('monthlyInvestment').value);
+      const r = parseFloat(document.getElementById('rate').value) / 100 / 12;
+      const n = parseInt(document.getElementById('duration').value) * 12;
+
+      const FV = P * ((Math.pow(1 + r, n) - 1) * (1 + r)) / r;
+      document.getElementById('monthlyResults').innerHTML = `
+        <h3>Result</h3>
+        <p>Total Value: ₹${formatIndianNumber(FV)}</p>
+        <p>Invested Amount: ₹${formatIndianNumber(P * n)}</p>
+        <p>Estimated Gain: ₹${formatIndianNumber(FV - P * n)}</p>
+      `;
+    }
+
+    function calculateYearlySIP() {
+      const P = parseFloat(document.getElementById('yearlyInvestment').value);
+      const r = parseFloat(document.getElementById('yearlyRate').value) / 100;
+      const n = parseInt(document.getElementById('yearlyDuration').value);
+
+      const FV = P * ((Math.pow(1 + r, n) - 1) * (1 + r)) / r;
+      document.getElementById('yearlyResults').innerHTML = `
+        <h3>Result</h3>
+        <p>Total Value: ₹${formatIndianNumber(FV)}</p>
+        <p>Invested Amount: ₹${formatIndianNumber(P * n)}</p>
+        <p>Estimated Gain: ₹${formatIndianNumber(FV - P * n)}</p>
+      `;
+    }
+
+    function calculateLumpsum() {
+      const P = parseFloat(document.getElementById('lumpsumInvestment').value);
+      const r = parseFloat(document.getElementById('lumpsumRate').value) / 100;
+      const n = parseInt(document.getElementById('lumpsumDuration').value);
+
+      const FV = P * Math.pow((1 + r), n);
+      document.getElementById('lumpsumResults').innerHTML = `
+        <h3>Result</h3>
+        <p>Total Value: ₹${formatIndianNumber(FV)}</p>
+        <p>Invested Amount: ₹${formatIndianNumber(P)}</p>
+        <p>Estimated Gain: ₹${formatIndianNumber(FV - P)}</p>
+      `;
+    }
+  </script>
+</body>
+
+</html>

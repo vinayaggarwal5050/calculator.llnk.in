@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIP Calculator</title>
+  <style>
+    :root {
+      --primary-color: #004d99;
+      --secondary-color: #e6f0ff;
+      --card-border: #d0d0d0;
+      --accent-color: #28a745;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f8fc;
+      color: #222;
+    }
+
+    header {
+      background: var(--primary-color);
+      color: #fff;
+      padding: 15px 20px;
+    }
+
+    main {
+      padding: 30px 20px;
+      max-width: 850px;
+      margin: auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--primary-color);
+    }
+
+    .tabs {
+      display: flex;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      box-shadow: inset 0 -2px 0 var(--primary-color);
+    }
+
+    .tab-button {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      background: var(--secondary-color);
+      border: none;
+      font-weight: 600;
+      font-size: 1rem;
+      color: darkgray;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .tab-button.active {
+      background: var(--primary-color);
+      color: #fff;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid var(--card-border);
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    button {
+      background: var(--primary-color);
+      color: #fff;
+      padding: 10px 15px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    button:hover {
+      background: #003366;
+    }
+
+    .results {
+      margin-top: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th,
+    td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: right;
+    }
+
+    th {
+      background: #f0f0f0;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+
+<body>
+  <header>
+    <h2>SIP Calculator</h2>
+  </header>
+
+  <main>
+    <div class="tabs">
+      <button class="tab-button active" onclick="showTab(0)">Monthly SIP</button>
+      <button class="tab-button" onclick="showTab(1)">Yearly SIP</button>
+      <button class="tab-button" onclick="showTab(2)">Lumpsum</button>
+    </div>
+
+    <div class="tab-content active" id="tab0">
+      <label for="monthly-amount">Monthly Investment (₹)</label>
+      <input type="number" id="monthly-amount" placeholder="e.g., 5000" />
+      <label for="monthly-rate">Expected Annual Return (%)</label>
+      <input type="number" id="monthly-rate" placeholder="e.g., 12" />
+      <label for="monthly-years">Investment Duration (Years)</label>
+      <input type="number" id="monthly-years" placeholder="e.g., 10" />
+      <button onclick="calculateMonthlySIP()">Calculate</button>
+      <div class="results" id="monthly-summary"></div>
+      <button onclick="downloadSummaryPDF('monthly-summary')">Download Summary</button>
+    </div>
+
+    <div class="tab-content" id="tab1">
+      <label for="yearly-amount">Yearly Investment (₹)</label>
+      <input type="number" id="yearly-amount" placeholder="e.g., 60000" />
+      <label for="yearly-rate">Expected Annual Return (%)</label>
+      <input type="number" id="yearly-rate" placeholder="e.g., 12" />
+      <label for="yearly-years">Investment Duration (Years)</label>
+      <input type="number" id="yearly-years" placeholder="e.g., 10" />
+      <button onclick="calculateYearlySIP()">Calculate</button>
+      <div class="results" id="yearly-summary"></div>
+      <button onclick="downloadSummaryPDF('yearly-summary')">Download Summary</button>
+    </div>
+
+    <div class="tab-content" id="tab2">
+      <label for="lumpsum-amount">Lumpsum Amount (₹)</label>
+      <input type="number" id="lumpsum-amount" placeholder="e.g., 100000" />
+      <label for="lumpsum-rate">Expected Annual Return (%)</label>
+      <input type="number" id="lumpsum-rate" placeholder="e.g., 12" />
+      <label for="lumpsum-years">Investment Duration (Years)</label>
+      <input type="number" id="lumpsum-years" placeholder="e.g., 10" />
+      <button onclick="calculateLumpsum()">Calculate</button>
+      <div class="results" id="lumpsum-summary"></div>
+      <button onclick="downloadSummaryPDF('lumpsum-summary')">Download Summary</button>
+    </div>
+  </main>
+
+  <script>
+    function showTab(index) {
+      const tabs = document.querySelectorAll('.tab-button');
+      const contents = document.querySelectorAll('.tab-content');
+      tabs.forEach((tab, i) => {
+        tab.classList.toggle('active', i === index);
+      });
+      contents.forEach((content, i) => {
+        content.classList.toggle('active', i === index);
+      });
+    }
+
+    function calculateMonthlySIP() {
+      const P = parseFloat(document.getElementById("monthly-amount").value);
+      const r = parseFloat(document.getElementById("monthly-rate").value) / 100 / 12;
+      const n = parseInt(document.getElementById("monthly-years").value) * 12;
+      if (!P || !r || !n) return;
+
+      const futureValue = P * ((Math.pow(1 + r, n) - 1) * (1 + r)) / r;
+      const invested = P * n;
+      const gain = futureValue - invested;
+
+      document.getElementById("monthly-summary").innerHTML = `
+        <table>
+          <tr><th>Total Invested</th><th>Estimated Returns</th><th>Future Value</th></tr>
+          <tr><td>₹${invested.toFixed(2)}</td><td>₹${gain.toFixed(2)}</td><td>₹${futureValue.toFixed(2)}</td></tr>
+        </table>`;
+    }
+
+    function calculateYearlySIP() {
+      const P = parseFloat(document.getElementById("yearly-amount").value);
+      const r = parseFloat(document.getElementById("yearly-rate").value) / 100;
+      const n = parseInt(document.getElementById("yearly-years").value);
+      if (!P || !r || !n) return;
+
+      const futureValue = P * ((Math.pow(1 + r, n) - 1) * (1 + r)) / r;
+      const invested = P * n;
+      const gain = futureValue - invested;
+
+      document.getElementById("yearly-summary").innerHTML = `
+        <table>
+          <tr><th>Total Invested</th><th>Estimated Returns</th><th>Future Value</th></tr>
+          <tr><td>₹${invested.toFixed(2)}</td><td>₹${gain.toFixed(2)}</td><td>₹${futureValue.toFixed(2)}</td></tr>
+        </table>`;
+    }
+
+    function calculateLumpsum() {
+      const P = parseFloat(document.getElementById("lumpsum-amount").value);
+      const r = parseFloat(document.getElementById("lumpsum-rate").value) / 100;
+      const n = parseInt(document.getElementById("lumpsum-years").value);
+      if (!P || !r || !n) return;
+
+      const futureValue = P * Math.pow(1 + r, n);
+      const gain = futureValue - P;
+
+      document.getElementById("lumpsum-summary").innerHTML = `
+        <table>
+          <tr><th>Principal</th><th>Estimated Returns</th><th>Future Value</th></tr>
+          <tr><td>₹${P.toFixed(2)}</td><td>₹${gain.toFixed(2)}</td><td>₹${futureValue.toFixed(2)}</td></tr>
+        </table>`;
+    }
+
+    async function downloadSummaryPDF(resultId) {
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF();
+      const element = document.getElementById(resultId);
+      const rows = element.querySelectorAll('table tr');
+
+      let y = 10;
+      rows.forEach((row, i) => {
+        const cols = row.querySelectorAll('th, td');
+        let x = 10;
+        cols.forEach(col => {
+          pdf.text(col.innerText, x, y);
+          x += 60;
+        });
+        y += 10;
+      });
+
+      pdf.save("sip-summary.pdf");
+    }
+  </script>
+</body>
+
+</html>

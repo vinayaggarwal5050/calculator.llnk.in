@@ -16,6 +16,8 @@
       --card-border: #d0d0d0;
       --accent-color: #28a745;
       --text-dark: #000000;
+      --nav-button-bg: #337acc;
+      --nav-button-active: #1a5ca0;
     }
 
     body {
@@ -36,6 +38,29 @@
       text-decoration: none;
       font-weight: bold;
       font-size: 1.2rem;
+    }
+
+    nav.financial-nav {
+      background: var(--primary-color);
+      padding: 10px 20px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    nav.financial-nav a {
+      background: var(--nav-button-bg);
+      color: #fff;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 25px;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+
+    nav.financial-nav a.active,
+    nav.financial-nav a:hover {
+      background: var(--nav-button-active);
     }
 
     main {
@@ -70,7 +95,7 @@
       border: none;
       font-weight: 600;
       font-size: 1rem;
-      color: var(--text-dark);
+      color: darkgray;
       transition: background 0.3s, color 0.3s;
     }
 
@@ -149,9 +174,17 @@
 
 <body>
   <header>
-    <a href="/">Online Calculator</a>
+    <a href="/index.html">Online Calculator</a>
   </header>
 
+  <nav class="financial-nav">
+    <a href="emi-calculator.html" class="active">EMI</a>
+    <a href="sip-calculator.html">SIP</a>
+    <a href="fd-calculator.html">FD</a>
+    <a href="rd-calculator.html">RD</a>
+    <a href="tax-calculator.html">Tax</a>
+  </nav>
+  
   <main>
     <h1>EMI Calculator</h1>
 
